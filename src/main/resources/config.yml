@@ -1,0 +1,128 @@
+# ========================================
+#        SBlock Plugin v1.2.0
+#       Desarrollado por Sirius
+#     Discord: ksirius
+#     GitHub: JhonTova (Jhon Edinson Tovar)
+# ========================================
+#
+# Compatible con Minecraft 1.21.x (probado en 1.21.11)
+# Sistema avanzado de bloqueo de encantamientos
+#
+# ========================================
+
+# Configuración de mensajes multiidioma
+# Usa & para códigos de color (ej: &a = verde, &c = rojo, &e = amarillo)
+messages:
+  no_permission: "&cNo tienes permisos para usar este comando."
+  usage: "&eUso: /sblock <encantamiento> <nivel|0|remove>"
+  examples: |
+    &6═══════════════ &eSBlock - Ejemplos &6═══════════════
+    &e/sblock sharpness 5     &7- Permite solo Filo hasta nivel V
+    &e/sblock filo 0          &7- Bloquea completamente Filo
+    &e/sblock fortune remove  &7- Desbloquea completamente Fortuna
+    &e/sblock list            &7- Muestra encantamientos bloqueados
+    &e/sblock reload          &7- Recarga la configuración
+    &6═══════════════════════════════════════════════════════
+  no_blocked_enchants: "&aNo hay encantamientos bloqueados actualmente."
+  blocked_enchants_list: "&6═══════ &eEncantamientos Bloqueados &6═══════"
+  enchant_not_found: "&cEncantamiento no reconocido: &f{enchant}"
+  enchant_unblocked: "&aEncantamiento desbloqueado: &f{enchant}"
+  enchant_blocked: "&cEncantamiento bloqueado: &f{enchant} &7(Nivel máximo: &a{level}&7)"
+  enchant_completely_blocked: "&cEncantamiento completamente bloqueado: &f{enchant}"
+  invalid_level: "&cNivel inválido. Debe ser un número entero mayor o igual a 0."
+  config_reloaded: "&a✓ Configuración recargada correctamente!"
+  reload_error: "&c✗ Error al recargar la configuración."
+  
+  # Mensajes para jugadores cuando se modifican items
+  enchant_removed: "&c⚠ &eEl encantamiento &c{enchant} &efue desactivado del servidor y removido de tus items."
+  enchant_reduced: "&6⚠ &eEl encantamiento &a{enchant} &efue reducido del nivel &c{old_level} &eal &a{new_level} &e(máximo permitido)."
+  
+  # Mensajes de bloqueo en yunques y mesas de encantamiento
+  enchant_blocked_anvil: "&c✗ No puedes agregar el encantamiento &e{enchant} &cporque está bloqueado en el servidor."
+  enchant_blocked_table: "&c✗ No puedes encantar con &e{enchant} &cporque está bloqueado en el servidor."
+
+# ========================================
+# Configuración de verificación de items
+# ========================================
+check_settings:
+  # Intervalo de verificación en ticks (20 ticks = 1 segundo)
+  # Recomendado: 60-120 ticks para óptimo rendimiento
+  check_interval: 60
+  
+  # Verificar items al unirse al servidor
+  check_on_join: true
+  
+  # Verificar items cuando cambia el slot seleccionado
+  check_on_item_held: true
+  
+  # Verificar items cuando interactúa con inventarios
+  check_on_inventory_click: true
+
+# ========================================
+# Encantamientos bloqueados
+# ========================================
+# Formato: nombre_encantamiento: nivel_máximo_permitido
+# 
+# Si nivel = 0: Completamente bloqueado (se elimina del item)
+# Si nivel > 0: Solo se permiten niveles hasta ese número
+# Para desbloquear: elimina la línea o usa comando /sblock <encantamiento> remove
+#
+# NOTA: Cambios aquí requieren /sblock reload para aplicarse
+blocked_enchantments:
+  # Ejemplos (descomenta para usar):
+  # sharpness: 3        # Permite solo Filo I, II, III
+  # fortune: 2          # Permite solo Fortuna I, II
+  # mending: 0          # Bloquea completamente Reparación
+  # unbreaking: 0       # Bloquea completamente Irrompibilidad
+  # efficiency: 5       # Permite Eficiencia hasta V
+
+# ========================================
+# Lista completa de encantamientos soportados:
+# ========================================
+#
+# ═══ COMBATE ═══
+# - sharpness / filo
+# - smite / castigo  
+# - bane_of_arthropods / perdicion_artropodos
+# - knockback / retroceso
+# - fire_aspect / aspecto_igneo
+# - looting / botin
+#
+# ═══ HERRAMIENTAS ═══
+# - efficiency / eficiencia
+# - silk_touch / toque_seda
+# - fortune / fortuna
+# - unbreaking / irrompibilidad
+#
+# ═══ ARMADURAS ═══
+# - protection / proteccion
+# - thorns / espinas
+# - unbreaking / irrompibilidad
+# - mending / reparacion
+#
+# ═══ ARCOS ═══
+# - power / fuerza
+# - punch / empuje
+# - flame / llama
+# - infinity / infinidad
+#
+# ═══ CASCO ESPECÍFICOS ═══
+# - aqua_affinity / afinidad_acuatica
+# - respiration / respiracion
+#
+# ═══ BOTAS ESPECÍFICAS ═══
+# - depth_strider / agilidad_acuatica
+# - frost_walker / paso_helado
+#
+# ═══ MALDICIONES ═══
+# - curse_of_binding / maldicion_ligadura
+# - curse_of_vanishing / maldicion_desaparicion / maldicion
+#
+# ========================================
+# 
+# Para más información y soporte:
+# Discord: ksirius
+# GitHub: JhonTova
+# 
+# ¡Gracias por usar SBlock!
+# ========================================

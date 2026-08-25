@@ -1,0 +1,27 @@
+name: SBlock
+version: 1.2.0
+main: me.sirius.sblock.SBlock
+api-version: '1.21'
+author: Sirius
+description: Sistema avanzado para bloquear y limitar encantamientos específicos en Minecraft
+website: https://github.com/JhonTova
+
+# El candado del núcleo. Sin SiriusCore.jar en la carpeta, Bukkit ni siquiera
+# intenta cargar este plugin: no es una comprobación que se pueda parchear, es
+# el propio cargador de plugins negándose a resolver la dependencia.
+depend:
+  - SiriusCore
+
+commands:
+  sblock:
+    description: Comando principal para gestionar encantamientos bloqueados
+    usage: /<command> <encantamiento> <nivel|0|remove|list|reload>
+    aliases: [sb, enchblock]
+    permission: sblock.admin
+permissions:
+  sblock.admin:
+    description: Permite usar comandos de administración de SBlock
+    default: op
+  sblock.bypass:
+    description: Permite usar items con encantamientos bloqueados (para staff)
+    default: false
