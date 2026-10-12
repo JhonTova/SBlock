@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import me.sirius.core.SiriusPlugin;
@@ -389,18 +390,31 @@ public class SBlock extends SiriusPlugin implements Listener, TabCompleter {
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        playersToCheck.add(event.getPlayer().getUniqueId());
+        queue(event.getPlayer());
     }
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerItemHeld(PlayerItemHeldEvent event) {
-        playersToCheck.add(event.getPlayer().getUniqueId());
+        queue(event.getPlayer());
     }
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getWhoClicked() instanceof Player) {
-            playersToCheck.add(event.getWhoClicked().getUniqueId());
+        if (event.getWhoClicked() instanceof Player player) {
+            queue(player);
+        }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        playersToCheck.remove(event.getPlayer().getUniqueId());
+    }
+
+    // Sin nada bloqueado no hay nada que revisar: encolar igualmente dejaba crecer
+    // el conjunto con cada jugador que pasaba por el servidor.
+    private void queue(Player player) {
+        if (!blockedEnchantments.isEmpty()) {
+            playersToCheck.add(player.getUniqueId());
         }
     }
     
@@ -473,7 +487,11 @@ public class SBlock extends SiriusPlugin implements Listener, TabCompleter {
     
     private void startItemCheckTask() {
         scheduler().syncTimer(() -> {
-            if (blockedEnchantments.isEmpty() || playersToCheck.isEmpty()) {
+            if (playersToCheck.isEmpty()) {
+                return;
+            }
+            if (blockedEnchantments.isEmpty()) {
+                playersToCheck.clear();
                 return;
             }
             Set<UUID> toCheck = new HashSet<>(playersToCheck);
@@ -493,7 +511,9 @@ public class SBlock extends SiriusPlugin implements Listener, TabCompleter {
 
         for (int slot = 0; slot < contents.length; slot++) {
             ItemStack item = contents[slot];
-            if (item == null || item.getType() == Material.AIR) {
+            // getEnchantments() lee el item sin copiar su meta; getItemMeta() la clona
+            // entera, y la mayoria del inventario no lleva encantamientos.
+            if (item == null || item.getType() == Material.AIR || item.getEnchantments().isEmpty()) {
                 continue;
             }
 
